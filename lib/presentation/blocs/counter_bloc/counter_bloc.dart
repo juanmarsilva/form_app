@@ -22,11 +22,19 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     }
 
     void _onResetCounter(CounterReset event, Emitter<CounterState> emit) {
-         emit(
+        emit(
             state.copyWith(
                 counter: 0,
             )
         );
+    }
+
+    void increaseBy([int value = 1]) {
+        add( CounterIncreased(value) );
+    }
+
+    void resetCounter() {
+        add( CounterReset() );
     }
 
 }
