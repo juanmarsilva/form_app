@@ -81,7 +81,7 @@ class _RegisterFormState extends State<_RegisterForm> {
         return null;
     };
 
-      String? Function(String?)? validatePassword = (value) {
+    String? Function(String?)? validatePassword = (value) {
         if( value == null  || value.isEmpty ) return 'Campo requerido';
 
         if( value.trim().isEmpty ) return 'Campo requerido';
