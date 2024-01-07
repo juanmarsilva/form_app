@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_app/presentation/blocs/register/register_cubit.dart';
 import 'package:form_app/presentation/widgets/widgets.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -10,7 +12,10 @@ class RegisterScreen extends StatelessWidget {
             appBar: AppBar(
                 title: const Text('Nuevo usuario'),
             ),
-            body: const _RegisterView(),
+            body: BlocProvider(
+                create: (context) => RegisterCubit(),
+                child: const _RegisterView()
+            ),
         );
     }
 }
@@ -93,6 +98,9 @@ class _RegisterFormState extends State<_RegisterForm> {
 
     @override
     Widget build(BuildContext context) {
+
+        final registerCubit = context.watch<RegisterCubit>();
+
         return Form(
             key: _formKey,
             child: Column(
@@ -101,7 +109,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     CustomTextFormField(
                         label: 'Nombre de usuario',
                         icon: Icons.person,
-                        onChanged: (value) => username = value,
+                        onChanged: registerCubit.usernameChanged,
                         validator: validateUsername
                     ),
 
@@ -110,7 +118,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     CustomTextFormField(
                         label: 'Correo electrónico',
                         icon: Icons.mail,
-                        onChanged: (value) => email = value,
+                        onChanged: registerCubit.emailChanged,
                         validator: validateEmail,
                     ),
 
@@ -120,17 +128,14 @@ class _RegisterFormState extends State<_RegisterForm> {
                         label: 'Contraseña',
                         icon: Icons.lock,
                         obscureText: true,
-                        onChanged: (value) => password = value,
+                        onChanged: registerCubit.passwordChanged,
                         validator: validatePassword,
                     ),
 
                     const SizedBox( height:  20 ),
 
                     FilledButton.tonalIcon(
-                        onPressed: () {
-                            final isValid = _formKey.currentState!.validate();
-                            if( !isValid ) return;
-                        }, 
+                        onPressed: registerCubit.onSubmit, 
                         icon: const Icon( Icons.save ),
                         label: const Text('Crear usuario'),
                     )
