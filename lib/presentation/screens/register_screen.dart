@@ -47,62 +47,19 @@ class _RegisterView extends StatelessWidget {
     }
 }
 
-class _RegisterForm extends StatefulWidget {
+class _RegisterForm extends StatelessWidget {
     const _RegisterForm();
-
-    @override
-    State<_RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<_RegisterForm> {
-
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-    String username = '';
-    String email = '';
-    String password = '';
-
-    String? Function(String?)? validateUsername = (value) {
-        if( value == null  || value.isEmpty ) return 'Campo requerido';
-
-        if( value.trim().isEmpty ) return 'Campo requerido';
-
-        if( value.length < 6 ) return 'Más de 6 letras';
-
-        return null;
-    };
-
-    String? Function(String?)? validateEmail = (value) {
-        if( value == null  || value.isEmpty ) return 'Campo requerido';
-
-        if( value.trim().isEmpty ) return 'Campo requerido';
-
-        final emailRegExp = RegExp(
-            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-        );
-
-        if( !emailRegExp.hasMatch(value) ) return 'Correo electrónico no valido';
-
-        return null;
-    };
-
-    String? Function(String?)? validatePassword = (value) {
-        if( value == null  || value.isEmpty ) return 'Campo requerido';
-
-        if( value.trim().isEmpty ) return 'Campo requerido';
-
-        if( value.length < 6 ) return 'Más de 6 letras';
-
-        return null;
-    };
 
     @override
     Widget build(BuildContext context) {
 
         final registerCubit = context.watch<RegisterCubit>();
 
+        final username = registerCubit.state.username;
+        final password = registerCubit.state.password;
+        // final email = registerCubit.state.email;
+
         return Form(
-            key: _formKey,
             child: Column(
                 children: [
 
@@ -110,7 +67,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                         label: 'Nombre de usuario',
                         icon: Icons.person,
                         onChanged: registerCubit.usernameChanged,
-                        validator: validateUsername
+                        errorMessage: username.errorMessage,
                     ),
 
                     const SizedBox( height:  20 ),
@@ -119,7 +76,6 @@ class _RegisterFormState extends State<_RegisterForm> {
                         label: 'Correo electrónico',
                         icon: Icons.mail,
                         onChanged: registerCubit.emailChanged,
-                        validator: validateEmail,
                     ),
 
                     const SizedBox( height:  20 ),
@@ -129,7 +85,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                         icon: Icons.lock,
                         obscureText: true,
                         onChanged: registerCubit.passwordChanged,
-                        validator: validatePassword,
+                        errorMessage: password.errorMessage,
                     ),
 
                     const SizedBox( height:  20 ),
