@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
     final String? Function(String?)? validator;
     final IconData? icon;
     final bool obscureText;
+    final Widget? suffixIcon;
 
     const CustomTextFormField({
         super.key, 
@@ -19,6 +20,7 @@ class CustomTextFormField extends StatelessWidget {
         this.onChanged, 
         this.validator, 
         this.icon, 
+        this.suffixIcon,
     });
 
     @override
@@ -45,7 +47,8 @@ class CustomTextFormField extends StatelessWidget {
                 hintText: hint,
                 focusColor: colors.primary,
                 prefixIcon: icon != null ? Icon(icon, color: colors.primary) : null,
-                errorText: errorMessage
+                errorText: errorMessage,
+                suffixIcon: suffixIcon,
             )
 
         );

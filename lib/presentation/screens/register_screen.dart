@@ -57,7 +57,7 @@ class _RegisterForm extends StatelessWidget {
 
         final username = registerCubit.state.username;
         final password = registerCubit.state.password;
-        // final email = registerCubit.state.email;
+        final email = registerCubit.state.email;
 
         return Form(
             child: Column(
@@ -76,6 +76,7 @@ class _RegisterForm extends StatelessWidget {
                         label: 'Correo electrónico',
                         icon: Icons.mail,
                         onChanged: registerCubit.emailChanged,
+                        errorMessage: email.errorMessage,
                     ),
 
                     const SizedBox( height:  20 ),
